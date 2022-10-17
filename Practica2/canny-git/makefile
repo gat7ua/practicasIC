@@ -1,5 +1,5 @@
-canny: main.o canny.o HashMap.o
-	g++ -o canny.out main.o canny.o HashMap.o
+canny: main.cpp HashMap.cpp canny.cpp
+	g++ main.cpp canny.cpp HashMap.cpp -o main
 main.o: main.cpp
 	g++ -c main.cpp
 canny.o: canny.cpp
@@ -9,4 +9,4 @@ HashMap.o: HashMap.cpp
 clean:
 	rm -f *.o *.out output_images/*.pgm
 run:
-	./canny.out chess.pgm 100 1
+	./main bird.pgm 10 10
