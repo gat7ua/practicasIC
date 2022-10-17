@@ -126,8 +126,14 @@ int main(int argc, char **argv)
 			img3 << (char)((int)final[i][j]);		
 
 	auto end = std::chrono::high_resolution_clock::now();
-	auto tiempoTotal = std::chrono::duration_cast<std::chrono::seconds>(end-start);
+	auto tiempoTotals = std::chrono::duration_cast<std::chrono::seconds>(end-start);
+	auto tiempoTotalm = std::chrono::duration_cast<std::chrono::milliseconds>(end-start);
 
-	cout << "\nTiempo total de ejecución: " << tiempoTotal.count() << " segundos" << endl;
+	cout << "Tiempo en segundos " << tiempoTotals.count() << endl;
+	cout << "Tiempo total en milisegundos " << tiempoTotalm.count() << endl;
+	auto tiempoTotalv = std::chrono::duration_cast<std::chrono::milliseconds>(end-start) - std::chrono::duration_cast<std::chrono::seconds>(end-start);
+
+
+	cout << "\nTiempo total de ejecución: " << tiempoTotals.count() << "," << tiempoTotalv.count() << " segundos" << endl;
 	return 0;
 }
