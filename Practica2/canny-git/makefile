@@ -8,7 +8,5 @@ HashMap.o: HashMap.cpp
 	g++ -c HashMap.cpp
 clean:
 	rm -f *.o *.out output_images/*.pgm
-sobel: sobel.o
-	g++ -o sobel.out sobel.o
-sobel.o: sobel.cpp
-	g++ -c sobel.cpp
+run:
+	./canny.out chess.pgm 100 1
