@@ -29,11 +29,11 @@ int main(int argc, char **argv)
 	int max_threshold = 1, max_value = 1;
 	if (argc != 4)
 	{
-		cout << "Entrando en modo automático" << endl;
-		cout << "A continuación se ejecturá el algoritmo con distintos valores para el estudio del tiempo" << endl;
+		// cout << "Entrando en modo automático" << endl;
+		// cout << "A continuación se ejecturá el algoritmo con distintos valores para el estudio del tiempo" << endl;
 		activaBucle = true;
-		max_threshold = 20;
-		max_value = 20;
+		max_threshold = 10;
+		max_value = 7;
 
 		// cout << "Proper syntax: ./a.out <input_filename> <high_threshold> <sigma_value>" << endl;
 		// return 0;
@@ -49,12 +49,12 @@ int main(int argc, char **argv)
 		return 0;
 	}	
 
-	cout << "Resultados de la ejecución" << endl;
-	cout << "------------------------------------------------------------------------------" << endl;
-	cout << "Threshold \t Sigma value \t Tiempo de ejecución" << endl;
+	// cout << "Resultados de la ejecución" << endl;
+	// cout << "------------------------------------------------------------------------------" << endl;
+	// cout << "Threshold \t Sigma value \t Tiempo de ejecución" << endl;
 
-	for(int z = 1; z <= max_threshold; z++){
-		for(int t = 1; t <= max_value; t++){
+	for(int z = 5; z <= max_threshold; z++){
+		for(int t = 5; t <= max_value; t++){
 			try{
 				auto start = std::chrono::high_resolution_clock::now();
 				// Opening output files
@@ -159,7 +159,7 @@ int main(int argc, char **argv)
 				// cout << "Tiempo total en milisegundos " << tiempoTotalm.count() << endl;
 				auto tiempoTotalv = std::chrono::duration_cast<std::chrono::milliseconds>(end-start) - std::chrono::duration_cast<std::chrono::seconds>(end-start);
 
-				cout << ::hi << "\t\t    " << ::sig << "\t\t    " << tiempoTotals.count() << "," << tiempoTotalv.count() << " segundos" << endl;
+				cout << ::hi << "\t\t\t    " << ::sig << "\t\t\t    " << tiempoTotals.count() << "." << tiempoTotalv.count() << endl;
 				//cout << "Threshold " << z << "\tSigma value " << t << "\tTiempo de ejecución " << tiempoTotals.count() << "," << tiempoTotalv.count() << " segundos" << endl;
 			}
 			catch(const exception& er){

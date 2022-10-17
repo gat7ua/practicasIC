@@ -7,8 +7,11 @@ canny.o: canny.cpp
 HashMap.o: HashMap.cpp
 	g++ -c HashMap.cpp
 clean:
-	rm -f *.o *.out output_images/*.pgm
+	rm -f *.o *.out output_images/*.pgm *.png *.txt
 tiempos: main
-	./main > tiempos
+	./main bird.pgm > tiempos.txt
+graphs: tiempos.txt tiempos.gnuplot
+	gnuplot tiempos.gnuplot
+rendimiento: graphs tiempos tiempos.txt
 run:
 	./main bird.pgm 10 10
