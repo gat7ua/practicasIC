@@ -8,5 +8,7 @@ HashMap.o: HashMap.cpp
 	g++ -c HashMap.cpp
 clean:
 	rm -f *.o *.out output_images/*.pgm
+tiempos: main
+	./main > tiempos
 run:
 	./main bird.pgm 10 10
