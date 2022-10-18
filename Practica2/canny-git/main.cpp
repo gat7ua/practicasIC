@@ -32,11 +32,10 @@ int main(int argc, char **argv)
 	{
 		cout << "Entrando en modo automático" << endl;
 		cout << "A continuación se ejecturá el algoritmo con distintos valores para el estudio del tiempo" << endl;
-		
+		activaBucle = true;
+		max_threshold = 5;
+		max_value = 7;	
 	}
-	activaBucle = true;
-	max_threshold = 5;
-	max_value = 7;
 	// Apertura del fichero
 	filename = string(argv[1]);
 	string path = "./input_images/" + filename;
