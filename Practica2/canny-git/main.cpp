@@ -8,6 +8,10 @@
 #include "header_files/global.hpp"
 #include "header_files/HashMap.hpp"
 
+#include <iostream>
+#include <vector>
+#include <chrono>
+
 using namespace std;
 
 char type[10];
@@ -37,6 +41,7 @@ int main(int argc, char **argv)
 		return 0;
 	}	
 
+	auto start = std::chrono::high_resolution_clock::now();
 	// Opening output files
 	ofstream img1("./output_images/canny_mag.pgm", ios::binary);
 	ofstream img2("./output_images/canny_peaks.pgm", ios::binary);		
@@ -114,10 +119,21 @@ int main(int argc, char **argv)
 		img2 << (char)(255);
 	}
 
+
 	// Output the 'final' matrix to img1
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
 			img3 << (char)((int)final[i][j]);		
 
+	auto end = std::chrono::high_resolution_clock::now();
+	auto tiempoTotals = std::chrono::duration_cast<std::chrono::seconds>(end-start);
+	auto tiempoTotalm = std::chrono::duration_cast<std::chrono::milliseconds>(end-start);
+
+	cout << "Tiempo en segundos " << tiempoTotals.count() << endl;
+	cout << "Tiempo total en milisegundos " << tiempoTotalm.count() << endl;
+	auto tiempoTotalv = std::chrono::duration_cast<std::chrono::milliseconds>(end-start) - std::chrono::duration_cast<std::chrono::seconds>(end-start);
+
+
+	cout << "\nTiempo total de ejecución: " << tiempoTotals.count() << "," << tiempoTotalv.count() << " segundos" << endl;
 	return 0;
 }
