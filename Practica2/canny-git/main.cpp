@@ -32,21 +32,14 @@ int main(int argc, char **argv)
 	{
 		cout << "Entrando en modo automático" << endl;
 		cout << "A continuación se ejecturá el algoritmo con distintos valores para el estudio del tiempo" << endl;
-		cout << "Hola 1" << endl;
-		activaBucle = true;
-		cout << "Hola 2" << endl;
-		max_threshold = 5;
-		cout << "Hola 3" << endl;
-		max_value = 7;
-		cout << "Hola 4" << endl;
+		
 	}
-	cout << "Hola 5" << endl;
+	activaBucle = true;
+	max_threshold = 5;
+	max_value = 7;
 	// Apertura del fichero
-	filename = argv[1];
-	int n = filename.length();
-	char fileName
-	cout << "Hola 6" << endl;
-	string path = strcat(string(filename), "./input_images/");
+	filename = string(argv[1]);
+	string path = "./input_images/" + filename;
 	ifstream infile(path, ios::binary);
 	if (!infile.is_open())
 	{
