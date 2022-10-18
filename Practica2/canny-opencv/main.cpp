@@ -1,9 +1,3 @@
-// Soliman Alnaizy, UCFID: 3715450
-// CAP 4453, Dr. Lobo, Fall 2018
-// ========================================================
-// ASSIGNMENT #1.2: C A N N Y   E D G E   D E T E C T I O N
-// ========================================================
-
 #include "header_files/canny.hpp"
 #include "header_files/global.hpp"
 #include "header_files/HashMap.hpp"
@@ -23,25 +17,31 @@ double sig;
 
 int main(int argc, char **argv)
 {
-	// Exit program if proper arguments are not provided by user
+	// Comprueba que el número de argumentos es correcto
 	if (argc != 4)
 	{
 		cout << "Proper syntax: ./a.out <input_filename> <high_threshold> <sigma_value>" << endl;
 		return 0;
 	}
 
-	// Exit program if file doesn't open
 	string filename(argv[1]);
 	string path = "./input_images/" + filename;
 
-	Mat image = imread(path);
+	Mat image = imread(path, IMREAD_GRAYSCALE);
 
+	// Comprueba que la imagen se ha podido abrir
 	if (image.empty()) 
 	{
 		cout << "Could not open or find the image" << endl;
-		cin.get(); //wait for any key press
 		return -1;
 	}
+
+	//--------------- Codigo para mostrar la imagen -----------------------
+	/*String windowName = filename; //Name of the window
+	namedWindow(windowName); // Create a window
+	imshow(windowName, image); // Show our image inside the created window.
+	waitKey(0); // Wait for any keystroke in the window
+	destroyWindow(windowName);*/
 
 	ifstream infile(path, ios::binary);
 	if (!infile.is_open())
@@ -50,27 +50,19 @@ int main(int argc, char **argv)
 		return 0;
 	}	
 
-	Mat *im1 = new Mat(image.rows, image.cols, (int) image.type()),
-		*im2 = new Mat(image.rows, image.cols, (int) image.type()),
-		*im3 = new Mat(image.rows, image.cols, (int) image.type());
-
-	// Opening output files
-	ofstream img1("./output_images/canny_mag.pgm", ios::binary);
-	ofstream img2("./output_images/canny_peaks.pgm", ios::binary);		
-	ofstream img3("./output_images/canny_final.pgm", ios::binary);
+	// Matrices de salida
+	Mat im1 = Mat(image.rows, image.cols, (int) image.type()),
+		im2 = Mat(image.rows, image.cols, (int) image.type()),
+		im3 = Mat(image.rows, image.cols, (int) image.type());
 
 	::hi = stoi(argv[2]);
 	::lo = .35 * hi;
 	::sig = stoi(argv[3]);
 
-	// Storing header information and copying into the new ouput images
-	infile >> ::type >> ::width >> ::height >> ::intensity;
-	img1 << type << endl << width << " " << height << endl << intensity << endl;
-	img2 << type << endl << width << " " << height << endl << intensity << endl;
-	img3 << type << endl << width << " " << height << endl << intensity << endl;
+	::width = image.cols;
+	::height = image.rows;
 
-	// These matrices will hold the integer values of the input image and masks.
-	// I'm dynamically allocating arrays to easily pass them into functions.
+	// Estas matrices almacenan los valores de la imagen de entrada y la máscara
 	double **pic = new double*[height], **mag = new double*[height], **final = new double*[height];
 	double **x = new double*[height], **y = new double*[height];
 
@@ -83,15 +75,17 @@ int main(int argc, char **argv)
 		y[i] = new double[width];
 	}
 
-	// Reading in the input image as integers
-	for (int i = 0; i < height; i++)
-		for (int j = 0; j < width; j++)
-			pic[i][j] = (int)infile.get();
+	// Almacena los datos en formato entero
+	for (int i = 0; i < height; i++){
+		for (int j = 0; j < width; j++) {
+			pic[i][j] = (int) image.at<unsigned char>(i, j);
+		}
+	}
 
-	// Create the magniute matrix
+	// Crea la matriz magnitud
 	magnitude_matrix(pic, mag, x, y);
 
-	// Get all the peaks and store them in vector
+	// Obtiene los picos y los almacena en un vector
 	HashMap *peaks = new HashMap();
 	vector<HPoint*> v = peak_detection(mag, peaks, x, y);
 
@@ -119,22 +113,27 @@ int main(int argc, char **argv)
 	// ================================= IMAGE OUTPUT =================================
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
-			img1 << (char)((int)mag[i][j]);
+			im1.at<unsigned char>(i, j) = (unsigned char)((int)mag[i][j]);
 
 	// Outputting the points stored in the vector to img2
 	int k = 0;
 	for (int i = 0; i < v.size(); i++)
 	{
+		int j = i / height;
 		while(k++ != (v.at(i)->x * height + v.at(i)->y - 1))
-			img2 << (char)(0);
+			im2.at<unsigned char>(i - height * j, j) << (unsigned char)(0);
 
-		img2 << (char)(255);
+		im2.at<unsigned char>(i, j) << (unsigned char)(255);
 	}
 
 	// Output the 'final' matrix to img1
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
-			img3 << (char)((int)final[i][j]);		
+			im3.at<unsigned char>(i, j) = (unsigned char)((int)final[i][j]);		
+
+	imwrite("./output_images/canny_mag.png", im1);
+	imwrite("./output_images/canny_peaks.png", im2);
+	imwrite("./output_images/canny_final.png", im3);
 
 	return 0;
 }

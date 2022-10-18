@@ -1,9 +1,3 @@
-// Soliman Alnaizy, UCFID: 3715450
-// CAP 4453, Dr. Lobo, Fall 2018
-// ========================================================
-// ASSIGNMENT #1.2: C A N N Y   E D G E   D E T E C T I O N
-// ========================================================
-
 #include "header_files/canny.hpp"
 #include "header_files/global.hpp"
 #include "header_files/HashMap.hpp"
