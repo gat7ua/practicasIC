@@ -24,22 +24,18 @@ double sig;
 
 int main(int argc, char **argv)
 {
-	// Exit program if proper arguments are not provided by user
 	bool activaBucle = false;
 	int max_threshold = 1, max_value = 1;
 	if (argc != 4)
 	{
-		// cout << "Entrando en modo automático" << endl;
-		// cout << "A continuación se ejecturá el algoritmo con distintos valores para el estudio del tiempo" << endl;
+		cout << "Entrando en modo automático" << endl;
+		cout << "A continuación se ejecturá el algoritmo con distintos valores para el estudio del tiempo" << endl;
 		activaBucle = true;
-		max_threshold = 10;
+		max_threshold = 5;
 		max_value = 7;
-
-		// cout << "Proper syntax: ./a.out <input_filename> <high_threshold> <sigma_value>" << endl;
-		// return 0;
 	}
 
-	// Exit program if file doesn't open
+	// Apertura del fichero
 	string filename(argv[1]);
 	string path = "./input_images/" + filename;
 	ifstream infile(path, ios::binary);
@@ -49,24 +45,26 @@ int main(int argc, char **argv)
 		return 0;
 	}	
 
-	// cout << "Resultados de la ejecución" << endl;
-	// cout << "------------------------------------------------------------------------------" << endl;
-	// cout << "Threshold \t Sigma value \t Tiempo de ejecución" << endl;
+	cout << "Resultados de la ejecución" << endl;
+	cout << "------------------------------------------------------------------------------" << endl;
+	cout << "Threshold \t Sigma value \t Tiempo de ejecución" << endl;
 
 	for(int z = 5; z <= max_threshold; z++){
-		for(int t = 5; t <= max_value; t++){
+		for(int t = 3; t <= max_value; t++){
 			try{
 				auto start = std::chrono::high_resolution_clock::now();
-				// Opening output files
+				// Ficheros de salida
 				ofstream img1("./output_images/canny_mag.pgm", ios::binary);
 				ofstream img2("./output_images/canny_peaks.pgm", ios::binary);		
 				ofstream img3("./output_images/canny_final.pgm", ios::binary);
 
+				// Si estamos en modo bucle, los valores cambiarán
 				if(activaBucle == true){
 					::hi = z;
 					::lo = .35 * hi;
 					::sig = t;
 				}
+				// Sino cogemos de los argumentos
 				else{
 					::hi = stoi(argv[2]);
 					::lo = .35 * hi;
@@ -78,6 +76,7 @@ int main(int argc, char **argv)
 				img1 << type << endl << width << " " << height << endl << intensity << endl;
 				img2 << type << endl << width << " " << height << endl << intensity << endl;
 				img3 << type << endl << width << " " << height << endl << intensity << endl;
+
 
 				// These matrices will hold the integer values of the input image and masks.
 				// I'm dynamically allocating arrays to easily pass them into functions.
@@ -159,7 +158,10 @@ int main(int argc, char **argv)
 				// cout << "Tiempo total en milisegundos " << tiempoTotalm.count() << endl;
 				auto tiempoTotalv = std::chrono::duration_cast<std::chrono::milliseconds>(end-start) - std::chrono::duration_cast<std::chrono::seconds>(end-start);
 
-				cout << ::hi << "\t\t\t    " << ::sig << "\t\t\t    " << tiempoTotals.count() << "." << tiempoTotalv.count() << endl;
+				// Para sacarlo bonito
+				// cout << ::hi << "\t\t\t    " << ::sig << "\t\t\t    " << tiempoTotals.count() << "." << tiempoTotalv.count() << endl;
+				// Para sacarlo al excel
+				cout << ::hi << "\t " << ::sig << "\t " << tiempoTotals.count() << "." << tiempoTotalv.count() << endl;
 				//cout << "Threshold " << z << "\tSigma value " << t << "\tTiempo de ejecución " << tiempoTotals.count() << "," << tiempoTotalv.count() << " segundos" << endl;
 			}
 			catch(const exception& er){
@@ -167,5 +169,6 @@ int main(int argc, char **argv)
 			}
 		}
 	}
+	cout << "Tamaño de la imagen en pixeles: " << ::height * ::width << endl;
 	return 0;
 }
