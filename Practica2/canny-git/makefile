@@ -5,7 +5,7 @@ eTime = ./tiempoEjecucion
 mFolder = ./mains
 
 canny: main.cpp HashMap.cpp canny.cpp
-	g++ main.cpp canny.cpp HashMap.cpp -lstdc++ -o ${mFolder}/mainNoOpt
+	g++ main.cpp canny.cpp HashMap.cpp -lstdc++ -Wall -std=c++2a -o ${mFolder}/mainNoOpt
 canny1: main.cpp HashMap.cpp canny.cpp
 	g++ main.cpp canny.cpp HashMap.cpp -lstdc++ -O1 -o ${mFolder}/mainO1
 canny2: main.cpp HashMap.cpp canny.cpp
@@ -27,8 +27,8 @@ HashMap.o: HashMap.cpp
 clean:
 	rm -f *.o *.out output_images/*.pgm *.png *.txt tiempoEjecucion/*.txt tiempoCompilacion/*.txt mains/*
 ############################################################
-compilationTimeNoOpt: ${mFolder}/mainNoOpt
-	time ${mFolder}/mainNoOpt > ${cTime}/compilacion_no_opt.txt
+compilationTimeNoOpt: ./mains/mainNoOpt
+	time ./mains/mainNoOpt > ./tiempoCompilacion/compilacion_no_opt.txt
 compilationTimeO1: ${mFolder}/mainO1
 	time ${mFolder}/mainO1 > ${cTime}/tiempoCompilacion/compilacion_O1.txt
 compilationTimeO2: ${mFolder}/mainO2
@@ -41,17 +41,17 @@ compilationTimeOz: ${mFolder}/mainOz
 	time ${mFolder}/mainOz > ${cTime}/compilacion_Oz.txt
 compilationTime: compilationTimeNoOpt compilationTimeO1 compilationTimeO2 compilationTimeO3 compilationTimeOs compilationTimeOz
 ############################################################
-tiempoNoOpt: main.o canny.o HashMap.o canny mainNoOpt
+tiempoNoOpt: main.o canny.o HashMap.o canny ${mFolder}/mainNoOpt
 	${mFolder}/mainNoOpt bird.pgm > ${eTime}/tiempoNoOpt.txt
-tiempoO1: main.o canny.o HashMap.o canny1 mainO1
+tiempoO1: main.o canny.o HashMap.o canny1 ${mFolder}/mainO1
 	${mFolder}/mainO1 bird.pgm > ${eTime}/tiempoO1.txt
-tiempoO2: main.o canny.o HashMap.o canny2 mainO2
+tiempoO2: main.o canny.o HashMap.o canny2 ${mFolder}/mainO2
 	${mFolder}/mainO2 bird.pgm > ${eTime}/tiempoO2.txt
-tiempoO3: main.o canny.o HashMap.o canny3 mainO3
+tiempoO3: main.o canny.o HashMap.o canny3 ${mFolder}/mainO3
 	${mFolder}/mainO3 bird.pgm > ${eTime}/tiempoO3.txt
-tiempoOs: main.o canny.o HashMap.o cannys mainOs
+tiempoOs: main.o canny.o HashMap.o cannys ${mFolder}/mainOs
 	${mFolder}/mainOs bird.pgm > ${eTime}/tiempoOs.txt
-tiempoOz: main.o canny.o HashMap.o cannyz mainOz
+tiempoOz: main.o canny.o HashMap.o cannyz ${mFolder}/mainOz
 	${mFolder}/mainOz bird.pgm > ${eTime}/tiempoOz.txt
 tiempo: clean tiempoNoOpt tiempoO1 tiempoO2 tiempoO3 tiempoOs compilationTime
 ############################################################

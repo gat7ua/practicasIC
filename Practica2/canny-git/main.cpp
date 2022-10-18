@@ -4,17 +4,19 @@
 // ASSIGNMENT #1.2: C A N N Y   E D G E   D E T E C T I O N
 // ========================================================
 
+#include <iostream>
+#include <vector>
+#include <chrono>
+#include <string.h>
+
 #include "header_files/canny.hpp"
 #include "header_files/global.hpp"
 #include "header_files/HashMap.hpp"
 
-#include <iostream>
-#include <vector>
-#include <chrono>
-
 using namespace std;
 
 char type[10];
+string filename;
 int height;
 int width;
 int intensity;
@@ -30,14 +32,21 @@ int main(int argc, char **argv)
 	{
 		cout << "Entrando en modo automático" << endl;
 		cout << "A continuación se ejecturá el algoritmo con distintos valores para el estudio del tiempo" << endl;
+		cout << "Hola 1" << endl;
 		activaBucle = true;
+		cout << "Hola 2" << endl;
 		max_threshold = 5;
+		cout << "Hola 3" << endl;
 		max_value = 7;
+		cout << "Hola 4" << endl;
 	}
-
+	cout << "Hola 5" << endl;
 	// Apertura del fichero
-	string filename(argv[1]);
-	string path = "./input_images/" + filename;
+	filename = argv[1];
+	int n = filename.length();
+	char fileName
+	cout << "Hola 6" << endl;
+	string path = strcat(string(filename), "./input_images/");
 	ifstream infile(path, ios::binary);
 	if (!infile.is_open())
 	{
@@ -170,5 +179,5 @@ int main(int argc, char **argv)
 		}
 	}
 	cout << "Tamaño de la imagen en pixeles: " << ::height * ::width << endl;
-	return 0;
+
 }
