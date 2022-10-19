@@ -3,19 +3,20 @@
 cTime = ./tiempoCompilacion
 eTime = ./tiempoEjecucion
 mFolder = ./mains
+foto = bird.pgm
 
 # Tipos de compilación
 ############################################################
 canny: main.cpp HashMap.cpp canny.cpp
-	g++ main.cpp canny.cpp HashMap.cpp -lstdc++ -o mainNoOpt
+	g++ main.cpp canny.cpp HashMap.cpp -lstdc++ -o ${mFolder}/mainNoOpt
 canny1: main.cpp HashMap.cpp canny.cpp
-	g++ main.cpp canny.cpp HashMap.cpp -lstdc++ -O1 -march=corei7 -o mainO1
+	g++ main.cpp canny.cpp HashMap.cpp -lstdc++ -O1 -march=corei7 -o ${mFolder}/mainO1
 canny2: main.cpp HashMap.cpp canny.cpp
-	g++ main.cpp canny.cpp HashMap.cpp -lstdc++ -O2 -march=corei7 -o mainO2
+	g++ main.cpp canny.cpp HashMap.cpp -lstdc++ -O2 -march=corei7 -o ${mFolder}/mainO2
 canny3: main.cpp HashMap.cpp canny.cpp
-	g++ main.cpp canny.cpp HashMap.cpp -lstdc++ -O3 -march=corei7 -o mainO3
+	g++ main.cpp canny.cpp HashMap.cpp -lstdc++ -O3 -march=corei7 -o ${mFolder}/mainO3
 cannyf: main.cpp HashMap.cpp canny.cpp
-	g++ main.cpp canny.cpp HashMap.cpp -lstdc++ -Ofast -march=corei7 -o mainFast
+	g++ main.cpp canny.cpp HashMap.cpp -lstdc++ -Ofast -march=corei7 -o ${mFolder}/mainFast
 
 # Generar los .o
 ############################################################
@@ -47,16 +48,16 @@ clean:
 
 # Obtención de los tiempos de ejecución
 ############################################################
-tiempoNoOpt: main.o canny.o HashMap.o canny mainNoOpt
-	./mainNoOpt bird.pgm > ${eTime}/tiempoNoOpt.txt
+tiempoNoOpt: main.o canny.o HashMap.o canny ${mFolder}/mainNoOpt
+	${mFolder}/mainNoOpt ${foto} > ${eTime}/tiempoNoOpt.txt
 tiempoO1: main.o canny.o HashMap.o canny1 ${mFolder}/mainO1
-	${mFolder}/mainO1 bird.pgm > ${eTime}/tiempoO1.txt
+	${mFolder}/mainO1 ${foto} > ${eTime}/tiempoO1.txt
 tiempoO2: main.o canny.o HashMap.o canny2 ${mFolder}/mainO2
-	${mFolder}/mainO2 bird.pgm > ${eTime}/tiempoO2.txt
+	${mFolder}/mainO2 ${foto} > ${eTime}/tiempoO2.txt
 tiempoO3: main.o canny.o HashMap.o canny3 ${mFolder}/mainO3
-	${mFolder}/mainO3 bird.pgm > ${eTime}/tiempoO3.txt
+	${mFolder}/mainO3 ${foto} > ${eTime}/tiempoO3.txt
 tiempoFast: main.o canny.o HashMap.o cannyf ${mFolder}/mainFast
-	${mFolder}/mainFast bird.pgm > ${eTime}/tiempoFast.txt
+	${mFolder}/mainFast ${foto} > ${eTime}/tiempoFast.txt
 tiempo: clean tiempoNoOpt tiempoO1 tiempoO2 tiempoO3 tiempoFast
 ############################################################
 graphs: tiempos.txt tiempos.gnuplot

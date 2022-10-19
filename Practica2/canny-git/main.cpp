@@ -28,13 +28,16 @@ int main(int argc, char **argv)
 {
 	bool activaBucle = false;
 	int max_threshold = 1, max_value = 1;
+	int iniT = 1, iniZ = 1;
 	if (argc != 4)
 	{
 		cout << "Entrando en modo automático" << endl;
 		cout << "A continuación se ejecturá el algoritmo con distintos valores para el estudio del tiempo" << endl;
 		activaBucle = true;
-		max_threshold = 5;
-		max_value = 7;	
+		max_threshold = 15;
+		max_value = 15;	
+		initZ = 5;
+		initT = 3;
 	}
 	// Apertura del fichero
 	filename = string(argv[1]);
@@ -50,8 +53,8 @@ int main(int argc, char **argv)
 	cout << "------------------------------------------------------------------------------" << endl;
 	cout << "Threshold \t Sigma value \t Tiempo de ejecución" << endl;
 
-	for(int z = 5; z <= max_threshold; z++){
-		for(int t = 3; t <= max_value; t++){
+	for(int z = initZ; z <= max_threshold; z++){
+		for(int t = initT; t <= max_value; t++){
 			try{
 				auto start = std::chrono::high_resolution_clock::now();
 				// Ficheros de salida
@@ -162,7 +165,7 @@ int main(int argc, char **argv)
 				// Para sacarlo bonito
 				// cout << ::hi << "\t\t\t    " << ::sig << "\t\t\t    " << tiempoTotals.count() << "." << tiempoTotalv.count() << endl;
 				// Para sacarlo al excel
-				cout << ::hi << "\t " << ::sig << "\t " << tiempoTotals.count() << "." << tiempoTotalv.count() << endl;
+				cout << ::hi << "\t " << ::sig << "\t " << tiempoTotals.count() << "," << tiempoTotalv.count() << endl;
 				//cout << "Threshold " << z << "\tSigma value " << t << "\tTiempo de ejecución " << tiempoTotals.count() << "," << tiempoTotalv.count() << " segundos" << endl;
 			}
 			catch(const exception& er){
@@ -171,5 +174,5 @@ int main(int argc, char **argv)
 		}
 	}
 	cout << "Tamaño de la imagen en pixeles: " << ::height * ::width << endl;
-
+	return 0;
 }
