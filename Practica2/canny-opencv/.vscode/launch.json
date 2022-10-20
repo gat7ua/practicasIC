@@ -5,9 +5,9 @@
             "name": "g++.exe - Build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/canny",
+            "program": "${fileDirname}/mains/mainNoOpt",
               // There I have got error Property keys must be doublequotedjsonc
-            "args": ["gato.jpg", "100", "10"],
+            "args": ["bird.pgm", "100", "10"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

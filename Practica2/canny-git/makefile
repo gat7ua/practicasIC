@@ -30,21 +30,21 @@ HashMap.o: HashMap.cpp
 # Limpiar
 ############################################################
 clean:
-	rm -f *.o *.out output_images/*.pgm *.png *.txt tiempoEjecucion/*.txt tiempoCompilacion/*.txt mains/*
+	rm -f *.o *.out output_images/*.pgm *.png *.txt tiempoEjecucion/* tiempoCompilacion/* mains/*
 
 # Obtención de los tiempo de compilación
 ############################################################
-# compilationTimeNoOpt: tiempoNoOpt mainNoOpt
-# 	time mainNoOpt
-# compilationTimeO1: mainO1
-# 	time mainO1 > ${cTime}/compilacion_O1.txt
-# compilationTimeO2: ${mFolder}/mainO2
-# 	time ${mFolder}/mainO2 > ${cTime}/compilacion_O2.txt
-# compilationTimeO3: ${mFolder}/mainO3
-# 	time ${mFolder}/mainO3 > ${cTime}/compilacion_O3.txt
-# compilationTimeFast: ${mFolder}/mainFast
-# 	time ${mFolder}/mainFast > ${cTime}/compilacion_Fast.txt
-# compilationTime: compilationTimeNoOpt compilationTimeO1 compilationTimeO2 compilationTimeO3 compilationTimeFast
+compilationTimeNoOpt: tiempoNoOpt canny ${mFolder}/mainNoOpt
+	time ${mFolder}/mainNoOpt > ${cTime}/compilacion_O0.txt 
+compilationTimeO1: canny1 ${mFolder}/mainO1
+	time ${mFolder}/mainO1 > ${cTime}/compilacion_O1.txt
+compilationTimeO2: canny2 ${mFolder}/mainO2
+	time ${mFolder}/mainO2 > ${cTime}/compilacion_O2.txt
+compilationTimeO3: canny3 ${mFolder}/mainO3
+	time ${mFolder}/mainO3 > ${cTime}/compilacion_O3.txt
+compilationTimeFast: cannyf ${mFolder}/mainFast
+	time ${mFolder}/mainFast > ${cTime}/compilacion_Fast.txt
+compilationTime: compilationTimeNoOpt compilationTimeO1 compilationTimeO2 compilationTimeO3 compilationTimeFast
 
 # Obtención de los tiempos de ejecución
 ############################################################
@@ -66,4 +66,4 @@ graphs: tiempos.txt tiempos.gnuplot
 rendimiento: graphs tiempos tiempos.txt
 ############################################################
 run:
-	./main bird.pgm 10 10
+	./main bird.pgm 100 10

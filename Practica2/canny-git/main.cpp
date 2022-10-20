@@ -37,8 +37,8 @@ int main(int argc, char **argv)
 		activaBucle = true;
 		max_threshold = 15;
 		max_value = 15;	
-		initZ = 5;
-		initT = 3;
+		iniZ = 5;
+		iniT = 3;
 	}
 	// Apertura del fichero
 	filename = string(argv[1]);
@@ -54,8 +54,8 @@ int main(int argc, char **argv)
 	cout << "------------------------------------------------------------------------------" << endl;
 	cout << "Threshold \t Sigma value \t Tiempo de ejecución" << endl;
 
-	for(int z = initZ; z <= max_threshold; z++){
-		for(int t = initT; t <= max_value; t++){
+	for(int z = iniZ; z <= max_threshold; z++){
+		for(int t = iniT; t <= max_value; t++){
 			try{
 				auto start = std::chrono::high_resolution_clock::now();
 				// Ficheros de salida

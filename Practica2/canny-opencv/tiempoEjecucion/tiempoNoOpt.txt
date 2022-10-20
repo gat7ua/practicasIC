@@ -1,0 +1,5 @@
+Entrando en modo automático
+A continuación se ejecturá el algoritmo con distintos valores para el estudio del tiempo
+Resultados de la ejecución
+------------------------------------------------------------------------------
+Threshold 	 Sigma value 	 Tiempo de ejecución
