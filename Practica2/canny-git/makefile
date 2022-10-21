@@ -66,4 +66,4 @@ graphs: tiempos.txt tiempos.gnuplot
 rendimiento: graphs tiempos tiempos.txt
 ############################################################
 run:
-	./main bird.pgm 100 10
+	${mFolder}/mainNoOpt bird.pgm 5 3
