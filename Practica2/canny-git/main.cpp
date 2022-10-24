@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+=======
+// Soliman Alnaizy, UCFID: 3715450
+// CAP 4453, Dr. Lobo, Fall 2018
+// ========================================================
+// ASSIGNMENT #1.2: C A N N Y   E D G E   D E T E C T I O N
+// ========================================================
+
+
+// Cabeceras
+>>>>>>> d89018a88b4b9980bc30cc478563589f9a59ac00
 #include <iostream>
 #include <vector>
 #include <chrono>
@@ -9,6 +20,7 @@
 
 using namespace std;
 
+// Variables globales
 char type[10];
 string filename;
 int height;
@@ -20,11 +32,19 @@ double sig;
 
 int main(int argc, char **argv)
 {
+<<<<<<< HEAD
 	int max_value = 9, max_threshold = 90;
 	int iniT = 9, iniZ = 90;
 
 	// Comprueba que el número de argumentos es correcto
 	if (argc < 4)
+=======
+	bool activaBucle = false;
+	int max_threshold = 1, max_value = 1;
+	int iniT = 1, iniZ = 1;
+	// Control de argumentos
+	if (argc != 4)
+>>>>>>> d89018a88b4b9980bc30cc478563589f9a59ac00
 	{
 		cout << "Entrando en modo automático" << endl;
 		cout << "A continuación se ejecturá el algoritmo con distintos valores para el estudio del tiempo" << endl;
@@ -54,7 +74,13 @@ int main(int argc, char **argv)
 
 	for(int z = iniZ; z <= max_threshold; z+=10){
 		for(int t = iniT; t <= max_value; t++){
+<<<<<<< HEAD
 			auto start = std::chrono::high_resolution_clock::now();
+=======
+			
+				// Empezamos el cronometro
+				auto start = std::chrono::high_resolution_clock::now();
+>>>>>>> d89018a88b4b9980bc30cc478563589f9a59ac00
 				// Ficheros de salida
 				ofstream img1("./output_images/canny_mag.pgm", ios::binary);
 				ofstream img2("./output_images/canny_peaks.pgm", ios::binary);		
@@ -64,14 +90,22 @@ int main(int argc, char **argv)
 				::lo = .35 * hi;
 				::sig = t;
 
+<<<<<<< HEAD
 				// Guardando información de las cabeceras y copiandola en las imágenes de salida
+=======
+				// Lectura de los datos de las imágenes
+>>>>>>> d89018a88b4b9980bc30cc478563589f9a59ac00
 				infile >> ::type >> ::width >> ::height >> ::intensity;
 				img1 << type << endl << width << " " << height << endl << intensity << endl;
 				img2 << type << endl << width << " " << height << endl << intensity << endl;
 				img3 << type << endl << width << " " << height << endl << intensity << endl;
 
 
+<<<<<<< HEAD
 				// Estas matrices almacenan los valores de la imagen de entrada y la máscara
+=======
+				// Creación de matrices para almacenar las imágenes y sus máscaras en forma de matriz
+>>>>>>> d89018a88b4b9980bc30cc478563589f9a59ac00
 				double **pic = new double*[height], **mag = new double*[height], **final = new double*[height];
 				double **x = new double*[height], **y = new double*[height];
 
@@ -84,21 +118,22 @@ int main(int argc, char **argv)
 					y[i] = new double[width];
 				}
 
-				// Reading in the input image as integers
+				// Lectura de la matriz
 				for (int i = 0; i < height; i++)
 					for (int j = 0; j < width; j++)
 						pic[i][j] = (int)infile.get();
 
-				// Create the magniute matrix
-				try{
-					magnitude_matrix(pic, mag, x, y);
-				}
-				catch(const exception& er){
-					continue;
-				}
-				// Get all the peaks and store them in vector
+				// Creación de la matriz de magnitud
+				
+				magnitude_matrix(pic, mag, x, y);
+				
+				
+
+				// Guardar los picos en el vector
 				HashMap *peaks = new HashMap();
 				vector<Point*> v = peak_detection(mag, peaks, x, y);
+
+				// Llamada a la función para 
 
 				// Go through the vector and call the recursive function and each point. If the value
 				// in the mag matrix is hi, then immediately accept it in final. If lo, then immediately
@@ -154,7 +189,11 @@ int main(int argc, char **argv)
 				// cout << ::hi << "\t\t\t    " << ::sig << "\t\t\t    " << tiempoTotals.count() << "." << tiempoTotalv.count() << endl;
 				// Para sacarlo al excel
 				cout << ::hi << "\t " << ::sig << "\t " << tiempoTotals.count() << "," << tiempoTotalv.count() << endl;
+<<<<<<< HEAD
 				//cout << "Threshold " << z << "\tSigma value " << t << "\tTiempo de ejecución " << tiempoTotals.count() << "," << tiempoTotalv.count() << " segundos" << endl;
+=======
+			}
+>>>>>>> d89018a88b4b9980bc30cc478563589f9a59ac00
 		}
 	}
 	cout << "Tamaño de la imagen en pixeles: " << ::height * ::width << endl;
