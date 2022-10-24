@@ -7,7 +7,7 @@
 #include <string.h>
 #include <vector>
 
-// Global type, height, width, intensity, hi, lo, and sig variables
+// Variables globales: type, height, width, intensity, hi, lo, y sig
 extern char type[10];
 extern int height;
 extern int width;

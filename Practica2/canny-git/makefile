@@ -30,13 +30,12 @@ HashMap.o: HashMap.cpp
 # Limpiar
 ############################################################
 clean:
-	rm -f *.o *.out output_images/*.pgm *.png *.txt tiempoEjecucion/* tiempoCompilacion/* mains/*
+	rm -f *.o *.out output_images/* *.png *.txt tiempoEjecucion/* tiempoCompilacion/* mains/*
 
 # Obtención de los tiempo de compilación
 ############################################################
-compilationTimeNoOpt: tiempoNoOpt canny ${mFolder}/mainNoOpt
-	cd ${mFolder}
-	time mainNoOpt > ../${cTime}/compilacion_O0.txt 
+compilationTimeNoOpt: ${mFolder}/mainNoOpt
+	time ${mFolder}/mainNoOpt input_images/casablanca.pgm > ../tiempoCompilacion/compilacion_O0.txt 
 compilationTimeO1: canny1 ${mFolder}/mainO1
 	time ${mFolder}/mainO1 > ${cTime}/compilacion_O1.txt
 compilationTimeO2: canny2 ${mFolder}/mainO2

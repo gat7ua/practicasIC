@@ -1,7 +1,7 @@
 #ifndef HASHMAP_HPP
 #define HASHMAP_HPP
 
-// Point class that will be used in the HashMap
+// Clase Point que se usará en HashMap
 class Point
 {
 public:
@@ -10,7 +10,6 @@ public:
 	Point(void);
 };
 
-// For my implementation, we're not going to need a delete fucntion
 class HashMap
 {
 	public:

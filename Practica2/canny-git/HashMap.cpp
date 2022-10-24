@@ -3,7 +3,7 @@
 
 using namespace std;
 
-// Point constructor
+// Constructor de Point
 Point::Point(int a, int b)
 {
 	x = a;
@@ -36,7 +36,7 @@ int HashMap::getCapacity(void)
 	return this->capacity;
 }
 
-// Checks if a pair of numbers is in the HashMap or not
+// Comprueba si el punto determinado por las coordenadas de entrada está en el mapa o no
 int HashMap::contains(int a, int b)
 {
 	Point *temp = new Point(a, b);
@@ -54,10 +54,10 @@ int HashMap::contains(int a, int b)
 	return 0;
 }
 
-// Inserts a pair of numbers into the HashMap
+// Inserta un punto en el mapa
 void HashMap::insert(int a, int b)
 {
-	// Disallow duplicates
+	// Impide duplicados
 	if (this->contains(a, b))
 		return;
 
@@ -76,7 +76,7 @@ void HashMap::insert(int a, int b)
 	return;
 }
 
-// Expands the table
+// Expande la tabla
 void HashMap::expand(void)
 {
 	this->capacity = this->primes[++this->currentPrime];
@@ -99,7 +99,6 @@ void HashMap::expand(void)
 	return;
 }
 
-// I wrote this up to help debug the other functions listed above
 void HashMap::printTable(void)
 {
 	Point *temp;
