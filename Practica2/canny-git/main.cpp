@@ -1,10 +1,3 @@
-// Soliman Alnaizy, UCFID: 3715450
-// CAP 4453, Dr. Lobo, Fall 2018
-// ========================================================
-// ASSIGNMENT #1.2: C A N N Y   E D G E   D E T E C T I O N
-// ========================================================
-
-
 #include <iostream>
 #include <vector>
 #include <chrono>
@@ -27,18 +20,23 @@ double sig;
 
 int main(int argc, char **argv)
 {
-	bool activaBucle = false;
-	int max_threshold = 1, max_value = 1;
-	int iniT = 1, iniZ = 1;
-	if (argc != 4)
+	int max_value = 9, max_threshold = 90;
+	int iniT = 9, iniZ = 90;
+
+	// Comprueba que el número de argumentos es correcto
+	if (argc < 4)
 	{
 		cout << "Entrando en modo automático" << endl;
 		cout << "A continuación se ejecturá el algoritmo con distintos valores para el estudio del tiempo" << endl;
-		activaBucle = true;
-		max_threshold = 15;
-		max_value = 15;	
-		iniZ = 5;
+		max_threshold = 140;
+		max_value = 20;	
+		iniZ = 40;
 		iniT = 3;
+	}
+	else if (argc == 4)
+	{
+		iniZ = max_threshold = stoi(argv[2]);
+		iniT = max_value = stoi(argv[3]);
 	}
 	// Apertura del fichero
 	filename = string(argv[1]);
@@ -54,37 +52,26 @@ int main(int argc, char **argv)
 	cout << "------------------------------------------------------------------------------" << endl;
 	cout << "Threshold \t Sigma value \t Tiempo de ejecución" << endl;
 
-	for(int z = iniZ; z <= max_threshold; z++){
+	for(int z = iniZ; z <= max_threshold; z+=10){
 		for(int t = iniT; t <= max_value; t++){
-			try{
-				auto start = std::chrono::high_resolution_clock::now();
+			auto start = std::chrono::high_resolution_clock::now();
 				// Ficheros de salida
 				ofstream img1("./output_images/canny_mag.pgm", ios::binary);
 				ofstream img2("./output_images/canny_peaks.pgm", ios::binary);		
 				ofstream img3("./output_images/canny_final.pgm", ios::binary);
 
-				// Si estamos en modo bucle, los valores cambiarán
-				if(activaBucle == true){
-					::hi = z;
-					::lo = .35 * hi;
-					::sig = t;
-				}
-				// Sino cogemos de los argumentos
-				else{
-					::hi = stoi(argv[2]);
-					::lo = .35 * hi;
-					::sig = stoi(argv[3]);
-				}
+				::hi = z;
+				::lo = .35 * hi;
+				::sig = t;
 
-				// Storing header information and copying into the new ouput images
+				// Guardando información de las cabeceras y copiandola en las imágenes de salida
 				infile >> ::type >> ::width >> ::height >> ::intensity;
 				img1 << type << endl << width << " " << height << endl << intensity << endl;
 				img2 << type << endl << width << " " << height << endl << intensity << endl;
 				img3 << type << endl << width << " " << height << endl << intensity << endl;
 
 
-				// These matrices will hold the integer values of the input image and masks.
-				// I'm dynamically allocating arrays to easily pass them into functions.
+				// Estas matrices almacenan los valores de la imagen de entrada y la máscara
 				double **pic = new double*[height], **mag = new double*[height], **final = new double*[height];
 				double **x = new double*[height], **y = new double*[height];
 
@@ -168,10 +155,6 @@ int main(int argc, char **argv)
 				// Para sacarlo al excel
 				cout << ::hi << "\t " << ::sig << "\t " << tiempoTotals.count() << "," << tiempoTotalv.count() << endl;
 				//cout << "Threshold " << z << "\tSigma value " << t << "\tTiempo de ejecución " << tiempoTotals.count() << "," << tiempoTotalv.count() << " segundos" << endl;
-			}
-			catch(const exception& er){
-				continue;
-			}
 		}
 	}
 	cout << "Tamaño de la imagen en pixeles: " << ::height * ::width << endl;

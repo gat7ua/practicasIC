@@ -10,10 +10,10 @@ public:
 	HPoint(void);
 };
 
-// Para esta implementación, no necesitaremos la función delete
 class HashMap
 {
 	public:
+		~HashMap(void);
 		HashMap(void);
 		void insert(int, int);
 		int contains(int, int);
@@ -27,7 +27,7 @@ class HashMap
 		int size = 0;
 		int capacity = 503;
 		int currentPrime = 0;
-		int primes[10] = {503, 1009, 2027, 4637, 10061, 22391, 47161};
+		int primes[13] = {503, 1009, 2027, 4637, 10061, 22391, 47161, 94327, 188653, 377291, 754583, 1509187, 3018413};
 };
 
 #endif

@@ -35,7 +35,8 @@ clean:
 # Obtención de los tiempo de compilación
 ############################################################
 compilationTimeNoOpt: tiempoNoOpt canny ${mFolder}/mainNoOpt
-	time ${mFolder}/mainNoOpt > ${cTime}/compilacion_O0.txt 
+	cd ${mFolder}
+	time mainNoOpt > ../${cTime}/compilacion_O0.txt 
 compilationTimeO1: canny1 ${mFolder}/mainO1
 	time ${mFolder}/mainO1 > ${cTime}/compilacion_O1.txt
 compilationTimeO2: canny2 ${mFolder}/mainO2

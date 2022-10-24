@@ -16,9 +16,14 @@ HPoint::HPoint()
 	y = 0;
 }
 
+HashMap::~HashMap(void)
+{
+	delete[] this->table;
+}
+
 HashMap::HashMap(void)
 {
-	this->table = new HPoint*[503];
+	this->table = new HPoint*[capacity];
 }
 
 int HashMap::hash(HPoint *data)

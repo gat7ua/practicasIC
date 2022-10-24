@@ -97,6 +97,7 @@ vector<HPoint*> peak_detection(double **mag, HashMap *h, double **x, double **y)
 
 			slope = y[i][j] / x[i][j];
 
+
 			// Sólo buscamos los picos. Si estamos en un pico almacenamos 255
 			if (slope <= tan(22.5) && slope > tan(-22.5))
 			{
@@ -145,16 +146,21 @@ vector<HPoint*> peak_detection(double **mag, HashMap *h, double **x, double **y)
 // ==================================================================================
 void recursiveDT(double **mag, double **final, HashMap *h, HashMap *peaks, int a, int b, int flag)
 {
+	
+	cout << "e0";
 	// Si el valor del píxel es < lo, fuera de los límites, o en el punto en que visitamos anteriormente,
 	// salir de la función.
-	if (mag[a][b] < lo || a < 0 || b < 0 || a >= height || b >= width)
+	if (a < 0 || b < 0 || a >= height || b >= width || mag[a][b] < lo)
 		return;
+	cout << "e1";
 	if (h->contains(a, b))
 		return;
-
+	
+	cout << "e2";
 	// Inserta el píxel actual para saber que lo hemos visitado.
 	h->insert(a, b);
 
+	cout << "e3";
 	// Si flag = 0, quiere decir que es el primer píxel de la serie que hemos visto.
 	// Vamos a mirar un píxel en "final" que este puesto en ON. Si lo encontramos,
 	// comprobamos el flag y salimos de los bucles.

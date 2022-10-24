@@ -8,13 +8,14 @@
 using namespace std;
 using namespace cv;
 
-char type[10];
 int height = 0;
 int width = 0;
-int intensity;
 int hi;
 int lo;
 double sig;
+
+bool debug = true;
+int debVar = 1;
 
 int main(int argc, char **argv)
 {
@@ -29,7 +30,7 @@ int main(int argc, char **argv)
 		max_threshold = 140;
 		max_value = 20;	
 		iniZ = 40;
-		iniT = 2;
+		iniT = 3;
 		//cout << "Proper syntax: ./a.out <input_filename> <high_threshold> <sigma_value>" << endl;
 		//return 0;
 	}
@@ -65,16 +66,22 @@ int main(int argc, char **argv)
 	cout << "------------------------------------------------------------------------------" << endl;
 	cout << "Threshold \t Sigma value \t Tiempo de ejecución" << endl;
 
-	for (int z = iniZ; z <= max_threshold; z += 10) {
-		for (int t = iniT; t <= max_value; t += 2) {
+	for (int z = iniZ; z <= max_threshold; z += 20) {
+		for (int t = iniT; t <= max_value; t += 3) {
 
 			auto start = std::chrono::high_resolution_clock::now();
-				
+			
+			if (::debug) { //1
+				::debVar = 1;
+				cout << "P" << ::debVar << endl;
+				::debVar++;
+			}
+
 			// Matrices de salida
 			Mat im1 = Mat(image.rows, image.cols, (int) image.type()),
 				im2 = Mat(image.rows, image.cols, (int) image.type()),
 				im3 = Mat(image.rows, image.cols, (int) image.type());
-				
+
 			::width = image.cols;
 			::height = image.rows;
 
@@ -82,9 +89,21 @@ int main(int argc, char **argv)
 			::lo = .35 * hi;
 			::sig = t;
 
+
+			if (::debug) { //2
+				cout << "P" << ::debVar << endl;
+				::debVar++;
+			}
+
 			// Estas matrices almacenan los valores de la imagen de entrada y la máscara
 			double **pic = new double*[height], **mag = new double*[height], **final = new double*[height];
 			double **x = new double*[height], **y = new double*[height];
+
+			
+			if (::debug) { //3
+				cout << "P" << ::debVar << endl;
+				::debVar++;
+			}
 
 			for (int i = 0; i < height; i++)
 			{
@@ -95,6 +114,12 @@ int main(int argc, char **argv)
 				y[i] = new double[width];
 			}
 
+
+			if (::debug) { //4
+				cout << "P" << ::debVar << endl;
+				::debVar++;
+			}
+
 			// Almacena los datos en formato entero
 			for (int i = 0; i < height; i++){
 				for (int j = 0; j < width; j++) {
@@ -102,28 +127,53 @@ int main(int argc, char **argv)
 				}
 			}
 
+			if (::debug) { //5
+				cout << "P" << ::debVar << endl;
+				::debVar++;
+			}
+
 			// Crea la matriz magnitud
 			magnitude_matrix(pic, mag, x, y);
+
+
+			if (::debug) { //6
+				cout << "P" << ::debVar << endl;
+				::debVar++;
+			}
 
 			// Obtiene los picos y los almacena en un vector
 			HashMap *peaks = new HashMap();
 			vector<HPoint*> v = peak_detection(mag, peaks, x, y);
 
-			// Go through the vector and call the recursive function and each point. If the value
-			// in the mag matrix is hi, then immediately accept it in final. If lo, then immediately
-			// reject. If between lo and hi, then check if it's next to a hi pixel using recursion
+			if (::debug) { //7
+				cout << "P" << ::debVar << endl;
+				::debVar++;
+			}
+
+			// Recorre el vector y llama a la función recursiva para cada punto. Si el valor en mag
+			// es = a hi, llega al final. Si el valor es = a lo, lo rechaza. Si está entre hi y lo,
+			// comprueba si está al lado de un pixel = a hi usando recursividad.
 			HashMap *h = new HashMap();
 			int a, b;
 			for (int i = 0; i < v.size(); i++)
 			{
 				a = v.at(i)->x;
 				b = v.at(i)->y;
-				if (mag[a][b] >= hi)
-					final[a][b] = 255;
-				else if (mag[a][b] < lo)
-					final[a][b] = 0;
-				else
-					recursiveDT(mag, final, h, peaks, a, b, 0);
+				
+				cout << hi << ", " << lo << " (" << a << ", " << b << ") - " << mag[a][b] << endl;
+				if (mag[a][b] >= hi) {
+					cout << "OWO";
+					final[a][b] = 255; }
+				else if (mag[a][b] < lo) {
+					cout << "AWA";
+					final[a][b] = 0;}
+				else { cout << "UWU";
+					recursiveDT(mag, final, h, peaks, a, b, 0); }
+			}
+
+			if (::debug) { //8
+				cout << "P" << ::debVar << endl;
+				::debVar++;
 			}
 
 			// ================================= IMAGE OUTPUT =================================
@@ -133,6 +183,11 @@ int main(int argc, char **argv)
 			for (int i = 0; i < height; i++)
 				for (int j = 0; j < width; j++)
 					im1.at<unsigned char>(i, j) = (unsigned char)((int)mag[i][j]);
+
+			if (::debug) { //9
+				cout << "P" << ::debVar << endl;
+				::debVar++;
+			}
 
 			// Outputting the points stored in the vector to img2
 			/*int k = 0;
@@ -144,10 +199,20 @@ int main(int argc, char **argv)
 				im2.at<unsigned char>(i, j) = (unsigned char)(255);
 			}*/
 
+			if (::debug) { //10
+				cout << "P" << ::debVar << endl;
+				::debVar++;
+			}
+
 			// Output the 'final' matrix to img1
 			for (int i = 0; i < height; i++)
 				for (int j = 0; j < width; j++)
 					im3.at<unsigned char>(i, j) = (unsigned char)((int)final[i][j]);		
+
+			if (::debug) { //11
+				cout << "P" << ::debVar << endl;
+				::debVar++;
+			}
 
 			auto end = std::chrono::high_resolution_clock::now();
 			auto tiempoTotals = std::chrono::duration_cast<std::chrono::seconds>(end-start);
@@ -165,9 +230,16 @@ int main(int argc, char **argv)
 			// cout << "Threshold " << z << "\tSigma value " << t << "\tTiempo de ejecución " << tiempoTotals.count() << 
 			//		"," << tiempoTotalv.count() << " segundos" << endl;
 
-			imwrite("./output_images/canny_mag.png", im1);
+
+
+			//imwrite("./output_images/canny_mag.png", im1);
 			//imwrite("./output_images/canny_peaks.png", im2);
-			imwrite("./output_images/canny_final.png", im3);
+			//imwrite("./output_images/canny_final.png", im3);
+
+			delete[] pic; delete[] mag; delete[] final;
+			delete[] x; delete[] y;
+			delete h; delete peaks;
+			v.clear();
 		}
 	}
 	cout << "Tamaño de la imagen en pixeles: " << ::height * ::width << endl;
