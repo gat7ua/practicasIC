@@ -13,6 +13,13 @@ int main()
 {
     struct timeval begin;
     gettimeofday(&begin, NULL);
+
+    // Crea un bloque 
+    // 1. index = 0
+    // 2. timestamp = 0
+    // 3. previousHash = 0
+
+    // hash y nonce no tienen valor
     Block block = Block(0, 0, "0");
     std::cout<<"Mining..."<<std::endl;
     Miner miner = Miner(MINE_DIFFICULTY);
@@ -22,5 +29,6 @@ int main()
     std::cout<<block.toString()<<std::endl;
     std::cout<<"Verified: "<<(miner.verify(block) ? "OK" : "FAIL")<<std::endl;
     std::cout<<"Elapsed time: "<<elapsedUsec(begin, end)/1000000.0<<"s"<<std::endl;
+    
 }
 

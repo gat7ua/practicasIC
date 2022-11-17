@@ -7,6 +7,7 @@
 #include <sstream>
 #include <iomanip>
 #include <string>
+#include <string.h>
 
 std::string sha256(const std::string& unhashed)
 {
@@ -59,19 +60,56 @@ class Miner
         
         Block* mine(Block* block) const
         {
+
             // create a copy of the block
+            int contador = 0;
+            int contador_aux = 0;
+            int contadorInic = 0;
+            int fin = 0;
+            int chunk = 0;
+            bool minado = false;
+            bool tstop = false;
+            int tn = 0;
+            std::string hash;
             Block mined = Block(block->serialize());
             mined.nonce = 0;
-            std::string hash = this->calculateHash(&mined);
-            while(!this->verify(hash))
-            {
-                mined.nonce++;
-                hash = this->calculateHash(&mined);
-            };
+            std::string hash_aux;
             
+            omp_set_num_threads(4);
+            #pragma omp parallel private(tstop, hash_aux, tn, contadorInic, chunk) shared(minado, mined, contador_aux)
+            {
+                
+                while(!minado)
+                {
+                    #pragma omp critical
+                        {  
+                            std::cout << "Hilo: " << omp_get_thread_num() << std::endl;
+                            std::cout << "Contador: " << contador << std::endl;
+                            contadorInic = omp_get_thread_num();
+                        }
+                        //&& (contadorInic <= (omp_get_thread_num() + 1) * 100000)
+                        while(!minado){  
+                        hash_aux = this->calculateHash_aux(&mined, contadorInic);
+                        #pragma omp critical
+                        {  
+                            contadorInic += 4;
+                        }
+                        tstop = this->verify(hash_aux);
+                        if(tstop){  
+                            fin = contadorInic-4;
+                            hash = hash_aux;
+                            minado = true;
+                            #pragma omp flush(minado)
+                        };
+                    }; 
+                    contador ++;  
+                };
+        
+            }
             // update block with mined hash
-            block->nonce = mined.nonce;
+            block->nonce = fin;
             block->hash = hash;
+            std::cout<< "hash: " << hash << std::endl;
             
             return block;
         }
@@ -85,15 +123,19 @@ class Miner
         {
             return hash.substr(0, this->zeros.length()).compare(this->zeros) == 0;
         }
-        
     private:
         std::string zeros;
         
+        std::string calculateHash_aux(Block* block, int contador) const
+        {
+            std::stringstream ss;
+            ss<<block->index<<block->timestamp<<block->previousHash<<contador;
+            return sha256(ss.str());
+        }
         std::string calculateHash(Block* block) const
         {
             std::stringstream ss;
             ss<<block->index<<block->timestamp<<block->previousHash<<block->nonce;
-            
             return sha256(ss.str());
         }
 };
