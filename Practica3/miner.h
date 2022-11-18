@@ -98,7 +98,7 @@ class Miner
             // update block with mined hash
             block->nonce = end;
             block->hash = hash;
-            std::cout<< "hash: " << hash << std::endl;
+            
             
             return block;
         }
