@@ -61,7 +61,6 @@ class Miner
         Block* mine(Block* block) const
         {
             // create a copy of the block
-            bool tstop = false;
             Block mined = Block(block->serialize());
             mined.nonce = 0;
             std::string hash, hash_aux;
@@ -72,35 +71,33 @@ class Miner
             omp_set_num_threads(4);
             #pragma omp parallel private(auxCheck, hash_aux, contInici) shared(minado, mined)
             {
-                
-                while(!minado)
-                {
+                while(!minado){
+                    while(!minado){  
+                        hash_aux = this->calculateHash_aux(&mined, contInici);
+
                     #pragma omp critical
-                        {  
-                            contInici = omp_get_thread_num();
-                        }
-                        while(!minado){  
-                            hash_aux = this->calculateHash_aux(&mined, contInici);
-                        #pragma omp critical
-                        {  
-                            contInici += 4;
-                        }
-                        auxCheck = this->verify(hash_aux);
-                        if(auxCheck){  
-                            end = contInici-4;
-                            hash = hash_aux;
-                            minado = true;
-                            #pragma omp flush(minado)
-                        };
-                    }; 
-                    cont ++;  
+                    {  
+                        contInici += 4;
+                    }
+
+                    auxCheck = this->verify(hash_aux);
+
+                    if(auxCheck){  
+                        end = contInici - 4;
+                        hash = hash_aux;
+                        minado = true;
+                        #pragma omp flush(minado)
+                    };
+                }; 
+                    
+                cont ++;  
                 };
         
             }
             // update block with mined hash
             block->nonce = end;
             block->hash = hash;
-            std::cout<< "hash: " << hash << std::endl;
+            
             
             return block;
         }
