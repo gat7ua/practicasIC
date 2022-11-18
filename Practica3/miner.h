@@ -61,26 +61,24 @@ class Miner
         Block* mine(Block* block) const
         {
             // create a copy of the block
-            bool tstop = false;
             Block mined = Block(block->serialize());
             mined.nonce = 0;
             std::string hash, hash_aux;
 
-            bool minado = false, auxCheck = false;
+            bool econtrado = false, auxCheck = false;
             int end = 0, cont = 0, contInici = 0;
             
             omp_set_num_threads(4);
-            #pragma omp parallel private(auxCheck, hash_aux, contInici) shared(minado, mined)
+            #pragma omp parallel private(auxCheck, hash_aux, contInici) shared(econtrado, mined)
             {
-                
-                while(!minado)
+                while(!econtrado)
                 {
                     #pragma omp critical
-                        {  
-                            contInici = omp_get_thread_num();
-                        }
-                        while(!minado){  
-                            hash_aux = this->calculateHash_aux(&mined, contInici);
+                    {  
+                        contInici = omp_get_thread_num();
+                    }
+                    while(!econtrado){  
+                        hash_aux = this->calculateHash_aux(&mined, contInici);
                         #pragma omp critical
                         {  
                             contInici += 4;
@@ -89,8 +87,8 @@ class Miner
                         if(auxCheck){  
                             end = contInici-4;
                             hash = hash_aux;
-                            minado = true;
-                            #pragma omp flush(minado)
+                            econtrado = true;
+                            #pragma omp flush(econtrado)
                         };
                     }; 
                     cont ++;  
