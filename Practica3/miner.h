@@ -33,7 +33,7 @@ std::string sha256(const std::string& unhashed)
 
     if(EVP_DigestFinal_ex(context, hash, &lengthOfHash) != 1)
     {
-        std::cerr<<"Error on EVP_DigestFinal_ex"<<std::endl;
+        std::cerr<<"Error on EVP_DigesauxCheckal_ex"<<std::endl;
         exit(0);
     }
     std::stringstream ss;
@@ -60,54 +60,45 @@ class Miner
         
         Block* mine(Block* block) const
         {
-
             // create a copy of the block
-            int contador = 0;
-            int contador_aux = 0;
-            int contadorInic = 0;
-            int fin = 0;
-            int chunk = 0;
-            bool minado = false;
             bool tstop = false;
-            int tn = 0;
-            std::string hash;
             Block mined = Block(block->serialize());
             mined.nonce = 0;
-            std::string hash_aux;
+            std::string hash, hash_aux;
+
+            bool minado = false, auxCheck = false;
+            int end = 0, cont = 0, contInici = 0;
             
             omp_set_num_threads(4);
-            #pragma omp parallel private(tstop, hash_aux, tn, contadorInic, chunk) shared(minado, mined, contador_aux)
+            #pragma omp parallel private(auxCheck, hash_aux, contInici) shared(minado, mined)
             {
                 
                 while(!minado)
                 {
                     #pragma omp critical
                         {  
-                            std::cout << "Hilo: " << omp_get_thread_num() << std::endl;
-                            std::cout << "Contador: " << contador << std::endl;
-                            contadorInic = omp_get_thread_num();
+                            contInici = omp_get_thread_num();
                         }
-                        //&& (contadorInic <= (omp_get_thread_num() + 1) * 100000)
                         while(!minado){  
-                        hash_aux = this->calculateHash_aux(&mined, contadorInic);
+                            hash_aux = this->calculateHash_aux(&mined, contInici);
                         #pragma omp critical
                         {  
-                            contadorInic += 4;
+                            contInici += 4;
                         }
-                        tstop = this->verify(hash_aux);
-                        if(tstop){  
-                            fin = contadorInic-4;
+                        auxCheck = this->verify(hash_aux);
+                        if(auxCheck){  
+                            end = contInici-4;
                             hash = hash_aux;
                             minado = true;
                             #pragma omp flush(minado)
                         };
                     }; 
-                    contador ++;  
+                    cont ++;  
                 };
         
             }
             // update block with mined hash
-            block->nonce = fin;
+            block->nonce = end;
             block->hash = hash;
             std::cout<< "hash: " << hash << std::endl;
             
