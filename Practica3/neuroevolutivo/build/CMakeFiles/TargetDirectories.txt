@@ -1,0 +1,14 @@
+/home/pancho/Desktop/5_Año/1_Cuatri/practicasIC/Practica3/neuroevolutivo/build/CMakeFiles/edit_cache.dir
+/home/pancho/Desktop/5_Año/1_Cuatri/practicasIC/Practica3/neuroevolutivo/build/CMakeFiles/rebuild_cache.dir
+/home/pancho/Desktop/5_Año/1_Cuatri/practicasIC/Practica3/neuroevolutivo/build/src/CMakeFiles/evolution.dir
+/home/pancho/Desktop/5_Año/1_Cuatri/practicasIC/Practica3/neuroevolutivo/build/src/CMakeFiles/edit_cache.dir
+/home/pancho/Desktop/5_Año/1_Cuatri/practicasIC/Practica3/neuroevolutivo/build/src/CMakeFiles/rebuild_cache.dir
+/home/pancho/Desktop/5_Año/1_Cuatri/practicasIC/Practica3/neuroevolutivo/build/src/utils/CMakeFiles/utils.dir
+/home/pancho/Desktop/5_Año/1_Cuatri/practicasIC/Practica3/neuroevolutivo/build/src/utils/CMakeFiles/edit_cache.dir
+/home/pancho/Desktop/5_Año/1_Cuatri/practicasIC/Practica3/neuroevolutivo/build/src/utils/CMakeFiles/rebuild_cache.dir
+/home/pancho/Desktop/5_Año/1_Cuatri/practicasIC/Practica3/neuroevolutivo/build/src/mlp/CMakeFiles/mlp.dir
+/home/pancho/Desktop/5_Año/1_Cuatri/practicasIC/Practica3/neuroevolutivo/build/src/mlp/CMakeFiles/edit_cache.dir
+/home/pancho/Desktop/5_Año/1_Cuatri/practicasIC/Practica3/neuroevolutivo/build/src/mlp/CMakeFiles/rebuild_cache.dir
+/home/pancho/Desktop/5_Año/1_Cuatri/practicasIC/Practica3/neuroevolutivo/build/src/genetic/CMakeFiles/genetic.dir
+/home/pancho/Desktop/5_Año/1_Cuatri/practicasIC/Practica3/neuroevolutivo/build/src/genetic/CMakeFiles/edit_cache.dir
+/home/pancho/Desktop/5_Año/1_Cuatri/practicasIC/Practica3/neuroevolutivo/build/src/genetic/CMakeFiles/rebuild_cache.dir

@@ -4,6 +4,7 @@
 #include <GL/freeglut.h>
 #include <iostream>
 #include "utils/engine.h"
+#include <omp.h>
 
 void drawCircle(float cx, float cy, float r, int num_segments, bool solid = false) 
 {
@@ -114,12 +115,18 @@ void FollowSimulation::init(const std::vector<Individual*> individuals)
 
 void FollowSimulation::update()
 {
-    for(int i=0;i<individuals.size();i++)
+    int chunk = individuals.size()/4;
+    omp_set_num_threads(4);
+    #pragma omp parallel shared(waypoints, chunk)
     {
-        FollowIndividual *individual = (FollowIndividual*)individuals[i];
-        if(individual->currentWaypoint < waypoints.size())
+        #pragma omp for schedule(dynamic, chunk)
+        for(int i=0;i<individuals.size();i++)
         {
-            updateIndividual(individual);
+            FollowIndividual *individual = (FollowIndividual*)individuals[i];
+            if(individual->currentWaypoint < waypoints.size())
+            {
+                updateIndividual(individual);
+            }
         }
     }
 }

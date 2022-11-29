@@ -1,0 +1,2 @@
+/usr/bin/ar qc libmlp.a CMakeFiles/mlp.dir/layer.cc.o CMakeFiles/mlp.dir/mlp.cc.o CMakeFiles/mlp.dir/neuron.cc.o
+/usr/bin/ranlib libmlp.a

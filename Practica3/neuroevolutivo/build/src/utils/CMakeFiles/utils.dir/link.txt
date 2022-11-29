@@ -1,0 +1,2 @@
+/usr/bin/ar qc libutils.a CMakeFiles/utils.dir/engine.cc.o CMakeFiles/utils.dir/point2d.cc.o CMakeFiles/utils.dir/utils.cc.o
+/usr/bin/ranlib libutils.a

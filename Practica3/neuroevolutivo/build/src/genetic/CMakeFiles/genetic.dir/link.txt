@@ -1,0 +1,2 @@
+/usr/bin/ar qc libgenetic.a CMakeFiles/genetic.dir/genetic.cc.o CMakeFiles/genetic.dir/individual.cc.o CMakeFiles/genetic.dir/simulation.cc.o
+/usr/bin/ranlib libgenetic.a
