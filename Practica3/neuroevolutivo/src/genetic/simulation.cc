@@ -115,16 +115,14 @@ void FollowSimulation::init(const std::vector<Individual*> individuals)
 
 void FollowSimulation::update()
 {
-    int chunk = individuals.size()/4;
+    int chunk = individuals.size() / 4;
     omp_set_num_threads(4);
     #pragma omp parallel shared(waypoints, chunk)
     {
         #pragma omp for schedule(dynamic, chunk)
-        for(int i=0;i<individuals.size();i++)
-        {
+        for(int i = 0; i < individuals.size(); i++){
             FollowIndividual *individual = (FollowIndividual*)individuals[i];
-            if(individual->currentWaypoint < waypoints.size())
-            {
+            if(individual->currentWaypoint < waypoints.size()){
                 updateIndividual(individual);
             }
         }

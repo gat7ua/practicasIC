@@ -161,15 +161,14 @@ std::vector<Individual*> Genetic::nextGeneration()
     
     std::vector<Individual*> newGeneration(individuals.size());
     std::vector<Individual*> best = bestIndividuals();
-    int chunk = ((best.size()/2)/4);
+    int chunk = ((best.size() / 2) / 4);
     int contador = 0;
   
     omp_set_num_threads(4);
     #pragma omp parallel shared(newGeneration, best, chunk, contador) 
     {
         #pragma omp for schedule(dynamic, chunk)
-        for(int i = 0;i<best.size()/2;i++)
-        {  
+        for(int i = 0; i < best.size() / 2; i++){  
             Individual *elite = createRandomIndividual();
            
             elite->mlp->setWeights(best[i]->mlp->getWeights());
@@ -180,24 +179,17 @@ std::vector<Individual*> Genetic::nextGeneration()
                 if(omp_get_thread_num() == 1){ //Codigo que nos sirve para ver que cada hilo ejecuta (best.size()/2)/4 de veces,
                     contador += 1;             // Y asi se dividen el trabajo.
                 }
-                
             }
 
         };
     }
-    std::cout<< "contador: " << contador << std::endl;
-    int chunk2 = (individuals.size() - (best.size()/2)) / 4;
+    int chunk2 = (individuals.size() - (best.size() / 2)) / 4;
     // The remaining indiviuals are combination of two random individuals from the best
     //omp_set_num_threads(4);
     #pragma omp parallel shared(newGeneration, best, chunk)
     {
         #pragma omp for schedule(dynamic, chunk2)
-        for(int i = best.size()/2; i<individuals.size();i++)
-        {
-            /*#pragma omp critical
-            {
-            std::cout<< "Hilo: " << omp_get_thread_num() << std::endl;
-            }*/
+        for(int i = best.size() / 2; i < individuals.size(); i++){
             Individual *child = createRandomIndividual();
             int a = randomNumber(0.0, 1.0) * (best.size()-1);
             int b = randomNumber(0.0, 1.0) * (best.size()-1);
