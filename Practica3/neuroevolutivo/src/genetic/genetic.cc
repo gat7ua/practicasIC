@@ -41,15 +41,19 @@ Genetic::~Genetic()
 
 void Genetic::initialize()
 {
+    int i = 0;
     if(!load())
     {
         std::cout<<"Initializing..."<<std::endl;
         individuals.clear();
         individuals.resize(population);
         
-        for(int i =0;i<population;i++)
-        { 
-            individuals[i] = createRandomIndividual();
+        omp_set_num_threads(population);
+        #pragma omp parallel shared(individuals, i) 
+        {
+            for(i = 0; i < population; i++){ 
+                individuals[i] = createRandomIndividual();
+            }    
         }
     }
     this->simulationStartTime = omp_get_wtime();
