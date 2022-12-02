@@ -1,10 +1,11 @@
+#include <omp.h> //Include de la libreria de OpenMP
 #include "simulation.h"
 #include "utils/utils.h"
 #include <GL/gl.h>
 #include <GL/freeglut.h>
 #include <iostream>
 #include "utils/engine.h"
-#include <omp.h>
+
 
 void drawCircle(float cx, float cy, float r, int num_segments, bool solid = false) 
 {
@@ -115,14 +116,17 @@ void FollowSimulation::init(const std::vector<Individual*> individuals)
 
 void FollowSimulation::update()
 {
-    int chunk = individuals.size() / 4;
+    //Paralizando el bucle de actualización de los individuos
     omp_set_num_threads(4);
-    #pragma omp parallel shared(waypoints, chunk)
+    int myChunk = individuals.size() / 4;
+    
+    #pragma omp parallel shared(myChunk, waypoints)
     {
-        #pragma omp for schedule(dynamic, chunk)
+        #pragma omp for schedule(myChunk, dynamic)
         for(int i = 0; i < individuals.size(); i++){
             FollowIndividual *individual = (FollowIndividual*)individuals[i];
-            if(individual->currentWaypoint < waypoints.size()){
+            if(individual->currentWaypoint < waypoints.size())
+            {
                 updateIndividual(individual);
             }
         }
