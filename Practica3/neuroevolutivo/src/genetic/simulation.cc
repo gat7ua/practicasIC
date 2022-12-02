@@ -114,6 +114,18 @@ void FollowSimulation::init(const std::vector<Individual*> individuals)
     }
 }
 
+// void FollowSimulation::update()
+// {
+//     for(int i=0;i<individuals.size();i++)
+//     {
+//         FollowIndividual *individual = (FollowIndividual*)individuals[i];
+//         if(individual->currentWaypoint < waypoints.size())
+//         {
+//             updateIndividual(individual);
+//         }
+//     }
+// }
+
 void FollowSimulation::update()
 {
     //Paralizando el bucle de actualización de los individuos
@@ -122,7 +134,7 @@ void FollowSimulation::update()
     
     #pragma omp parallel shared(myChunk, waypoints)
     {
-        #pragma omp for schedule(myChunk, dynamic)
+        #pragma omp for schedule(dynamic, myChunk)
         for(int i = 0; i < individuals.size(); i++){
             FollowIndividual *individual = (FollowIndividual*)individuals[i];
             if(individual->currentWaypoint < waypoints.size())

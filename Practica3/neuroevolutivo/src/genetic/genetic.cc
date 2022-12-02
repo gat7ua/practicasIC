@@ -48,14 +48,15 @@ void Genetic::initialize()
         individuals.clear();
         individuals.resize(population);
         
-        omp_set_num_threads(population);
-        #pragma omp parallel shared(cont, individuals) 
+        omp_set_num_threads(4);
+        #pragma omp parallel shared(cont, individuals)
         {
             for(cont=0;cont<population;cont++)
-            { 
-                individuals[cont] = createRandomIndividual();
-            }    
-        }
+        { 
+            individuals[cont] = createRandomIndividual();
+        } 
+        }   
+        
     }
     this->simulationStartTime = omp_get_wtime();
     simulation->init(individuals);
@@ -137,6 +138,7 @@ void Genetic::save()
 
 void Genetic::updateAndEvolve()
 {
+    int i = 0;
     if(!simulation->run(true))
     {
         if (this->simulationStartTime > 0.0)
@@ -147,10 +149,16 @@ void Genetic::updateAndEvolve()
         
         std::vector<Individual*> newGeneration = nextGeneration();
         
-        for(int i = 0;i < individuals.size(); i++)
+        omp_set_num_threads(4);
+        #pragma omp parallel shared(i, individuals)
         {
-            delete individuals[i];
+            #pragma omp for schedule(dynamic)
+            for(i = 0; i < individuals.size();i++)
+            {
+                delete individuals[i];
+            }
         }
+
         individuals = newGeneration;
         generation++;
         std::cout<<"Generation "<<generation<<std::endl;
@@ -160,9 +168,42 @@ void Genetic::updateAndEvolve()
     }
 }
 
+// Código sin parelelizar para poder hacer compraciones de tiempo
+
+// std::vector<Individual*> Genetic::nextGeneration()
+// {
+//     std::vector<Individual*> newGeneration(individuals.size());
+//     std::vector<Individual*> best = bestIndividuals();
+    
+//     // Perform elitism, best individuals pass directly to next generation
+//     for(int i = 0;i<best.size()/2;i++)
+//     {
+//         Individual *elite = createRandomIndividual();
+//         elite->mlp->setWeights(best[i]->mlp->getWeights());
+//         elite->mlp->setConnections(best[i]->mlp->getConnections());
+//         newGeneration[i] = elite;
+//     }
+    
+//     // The remaining indiviuals are combination of two random individuals from the best
+//     for(int i = best.size()/2; i<individuals.size();i++)
+//     {
+//         Individual *child = createRandomIndividual();
+//         int a = randomNumber(0.0, 1.0) * (best.size()-1);
+//         int b = randomNumber(0.0, 1.0) * (best.size()-1);
+//         Individual *parent1 = best[a];
+//         Individual *parent2 = best[b];
+        
+//         parent1->mate(*parent2, child);
+        
+//         newGeneration[i] = child;  
+//     }
+    
+//     return newGeneration;
+// }
+
+// Nuestro código paralelizado
 std::vector<Individual*> Genetic::nextGeneration()
 {
-    //Paralelizando Genetic::nextGeneration
     std::vector<Individual*> newGeneration(individuals.size());
     std::vector<Individual*> best = bestIndividuals();
     int auxiliar = 0, myChunk = ((best.size() / 2) / 4);
@@ -170,7 +211,7 @@ std::vector<Individual*> Genetic::nextGeneration()
     omp_set_num_threads(4);
     #pragma omp parallel shared(auxiliar, myChunk, best, newGeneration) 
     {
-        #pragma omp for schedule(myChunk)
+        #pragma omp for schedule(dynamic, myChunk)
         for(int i = 0; i < best.size() / 2; i++){  
             Individual *elite = createRandomIndividual();
             elite->mlp->setWeights(best[i]->mlp->getWeights());
@@ -191,7 +232,7 @@ std::vector<Individual*> Genetic::nextGeneration()
 
     #pragma omp parallel shared(myChunk, best, newGeneration)
     {
-        #pragma omp for schedule(myChunk2)
+        #pragma omp for schedule(dynamic, myChunk2)
         for(int i = best.size() / 2; i < individuals.size(); i++){
             Individual *child = createRandomIndividual();
             int a = randomNumber(0.0, 1.0) * (best.size()-1);
