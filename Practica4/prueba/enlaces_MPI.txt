@@ -1,0 +1,8 @@
+https://mpitutorial.com/tutorials/mpi-hello-world/
+
+
+https://www.codingame.com/playgrounds/47058/have-fun-with-mpi-in-c/take-the-first-steps-hello-world
+
+https://www.eecis.udel.edu/~pollock/367/manual/node18.html
+
+
