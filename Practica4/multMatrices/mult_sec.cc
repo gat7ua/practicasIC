@@ -1,11 +1,12 @@
 #include <iostream>
 #include <cstdlib>
+#include <chrono>
 #include <stdlib.h>
 using namespace std;
 
-const int N = 525;
+const int N = 400;
 
-void multiply(int mat1[][N], int mat2[][N], int res[][N]){
+void mult(int mat1[][N], int mat2[][N], int res[][N]){
     for (int i = 0; i < N; i++){
         for (int j = 0; j < N; j++){
             res[i][j] = 0;
@@ -17,6 +18,7 @@ void multiply(int mat1[][N], int mat2[][N], int res[][N]){
 }
 
 int main(){
+    auto start = std::chrono::high_resolution_clock::now();
     int mat1[N][N]; 
     int mat2[N][N];
     int mat3[N][N];  
@@ -36,19 +38,21 @@ int main(){
         }
     }
 
-    multiply(mat1, mat2, res1);
+    mult(mat1, mat2, res1);
+    mult(mat3, mat4, res2);
+    mult(res1, res2, res3);
 
-    multiply(mat3, mat4, res2);
+    // for (int i = 0; i < N; i++){
+    //     for (int j = 0; j < N; j++){
+    //         cout << res3[i][j] << " ";
+    //     }
 
-    multiply(res1, res2, res3);
+    //     cout << endl;
+    // }
 
-    for (int i = 0; i < N; i++){
-        for (int j = 0; j < N; j++){
-            cout << res3[i][j] << " ";
-        }
-
-        cout << endl;
-    }
+    auto end = std::chrono::high_resolution_clock::now();
+	auto tiempoTotalm = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    cout << "Tiempo de ejecución total (milisegundos) = " << tiempoTotalm.count() << endl;
 
     return 0;
 }

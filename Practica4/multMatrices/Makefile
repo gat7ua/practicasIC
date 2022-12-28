@@ -14,4 +14,4 @@ clean:
 	rm ./mult_sec ./mult_par
 
 par: comPar
-	mpirun -mca plm_rsh_no_tree_spawn 1 -hostfile host_files -n 4 ./${EXECS}
+	mpirun -mca plm_rsh_no_tree_spawn 1 -hostfile host_files -n 4 ./mult_par
