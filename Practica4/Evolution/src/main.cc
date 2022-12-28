@@ -18,6 +18,7 @@
 #include <string.h>
 #include <limits>
 #include <map>
+#include <mpi.h>
 
 int width = 500, height = 500;
 bool display = false;
@@ -199,6 +200,7 @@ int main(int argc, char** argv)
     {
         return 0;
     }
+    MPI_Init(NULL, NULL);
     
     genetic = factory[simulationName](simulationName);
     genetic->initialize();
@@ -219,6 +221,8 @@ int main(int argc, char** argv)
     glutReshapeFunc(resizeNetwork);
     
     glutMainLoop();
+
+    MPI_Finalize();
     
     return 0;
 }

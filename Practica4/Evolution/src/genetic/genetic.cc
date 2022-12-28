@@ -10,6 +10,7 @@
 #include <iostream>
 #include <functional>
 #include <omp.h>
+#include <mpi.h>
 
 Genetic::Genetic(int population, const std::string &fileName, std::function<Individual*()> createRandomIndividual, Simulation* simulation)
 {
@@ -185,6 +186,41 @@ std::vector<Individual*> Genetic::nextGeneration()
     
     return newGeneration;
 }
+
+// std::vector<Individual*> Genetic::nextGeneration(){
+//     std::vector<Individual*> newGeneration(individuals.size());
+//     std::vector<Individual*> best = bestIndividuals();
+
+//     int rank, size;
+//     MPI_Init(NULL, NULL);
+//     MPI_Comm_size(MPI_COMM_WORLD, &size);
+//     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+//     // Dividir el trabajo entre  los procesos disponibles
+//     int chunkSize = population / size;
+//     int startIndex = rank * chunkSize;
+//     int endIndex = startIndex + chunkSize - 1;
+
+//     // Create new individuals by combining two random individuals from the best
+//     for (int i = startIndex; i <= endIndex; i++){
+//         Individual *child = createRandomIndividual();
+//         int a = randomNumber(0.0, 1.0) * (best.size() - 1);
+//         int b = randomNumber(0.0, 1.0) * (best.size() - 1);
+//         Individual *parent1 = best[a];
+//         Individual *parent2 = best[b];
+        
+//         parent1->mate(*parent2, child);
+
+//         newGeneration[i] = child;
+//     }
+
+//     std::vector<Individual*> allNewIndividuals(population);
+//     MPI_Gather(newGeneration.data(), chunkSize, MPI_INT, allNewIndividuals.data(), chunkSize, MPI_INT, 0, MPI_COMM_WORLD);
+
+//     MPI_Finalize();
+
+//     return newGeneration;
+// }
 
 std::vector<Individual*> Genetic::bestIndividuals()
 {

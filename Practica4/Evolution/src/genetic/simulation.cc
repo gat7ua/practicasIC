@@ -4,6 +4,7 @@
 #include <GL/freeglut.h>
 #include <iostream>
 #include "utils/engine.h"
+#include <mpi.h>
 
 void drawCircle(float cx, float cy, float r, int num_segments, bool solid = false) 
 {
@@ -123,6 +124,29 @@ void FollowSimulation::update()
         }
     }
 }
+
+// void FollowSimulation::update()
+// {
+//     int rank, size;
+//     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+//     MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+//     int chunkSize = individuals.size() / size;
+//     int start = rank * chunkSize;
+//     int end = start + chunkSize;
+//     if (rank == size - 1) end = individuals.size(); 
+
+//     for (int i = start; i < end; i++){
+//         FollowIndividual *individual = (FollowIndividual*)individuals[i];
+//         if (individual->currentWaypoint < waypoints.size())
+//         {
+//             updateIndividual(individual);
+//         }
+//     }
+
+//     MPI_Barrier(MPI_COMM_WORLD);
+// }
+
 
 void FollowSimulation::updateIndividual(FollowIndividual* individual)
 {
