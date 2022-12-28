@@ -1,7 +1,10 @@
 file(REMOVE_RECURSE
   "CMakeFiles/mlp.dir/layer.cc.o"
+  "CMakeFiles/mlp.dir/layer.cc.o.d"
   "CMakeFiles/mlp.dir/mlp.cc.o"
+  "CMakeFiles/mlp.dir/mlp.cc.o.d"
   "CMakeFiles/mlp.dir/neuron.cc.o"
+  "CMakeFiles/mlp.dir/neuron.cc.o.d"
   "libmlp.a"
   "libmlp.pdb"
 )

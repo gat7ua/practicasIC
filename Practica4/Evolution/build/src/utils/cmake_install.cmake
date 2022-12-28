@@ -1,4 +1,4 @@
-# Install script for directory: /home/gat7/Escritorio/Evolution/practicasIC/Practica4/Evolution/src/utils
+# Install script for directory: /home/ic/Desktop/practicasIC/Practica4/Evolution/src/utils
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -35,5 +35,10 @@ endif()
 # Is this installation the result of a crosscompile?
 if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
+endif()
+
+# Set default install directory permissions.
+if(NOT DEFINED CMAKE_OBJDUMP)
+  set(CMAKE_OBJDUMP "/usr/bin/objdump")
 endif()
 

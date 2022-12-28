@@ -155,54 +155,34 @@ void Genetic::updateAndEvolve()
     }
 }
 
-// Aquí
 std::vector<Individual*> Genetic::nextGeneration()
 {
-    
     std::vector<Individual*> newGeneration(individuals.size());
     std::vector<Individual*> best = bestIndividuals();
-    int chunk = ((best.size() / 2) / 4);
-    int contador = 0;
-  
-    omp_set_num_threads(4);
-    #pragma omp parallel shared(newGeneration, best, chunk, contador) 
+    
+    // Perform elitism, best individuals pass directly to next generation
+    for(int i = 0;i<best.size()/2;i++)
     {
-        #pragma omp for schedule(dynamic, chunk)
-        for(int i = 0; i < best.size() / 2; i++){  
-            Individual *elite = createRandomIndividual();
-           
-            elite->mlp->setWeights(best[i]->mlp->getWeights());
-            elite->mlp->setConnections(best[i]->mlp->getConnections());
-            #pragma omp critical
-            {
-                newGeneration[i] = elite;
-                if(omp_get_thread_num() == 1){ //Codigo que nos sirve para ver que cada hilo ejecuta (best.size()/2)/4 de veces,
-                    contador += 1;             // Y asi se dividen el trabajo.
-                }
-            }
-
-        };
+        Individual *elite = createRandomIndividual();
+        elite->mlp->setWeights(best[i]->mlp->getWeights());
+        elite->mlp->setConnections(best[i]->mlp->getConnections());
+        newGeneration[i] = elite;
     }
-    int chunk2 = (individuals.size() - (best.size() / 2)) / 4;
+    
     // The remaining indiviuals are combination of two random individuals from the best
-    //omp_set_num_threads(4);
-    #pragma omp parallel shared(newGeneration, best, chunk)
+    for(int i = best.size()/2; i<individuals.size();i++)
     {
-        #pragma omp for schedule(dynamic, chunk2)
-        for(int i = best.size() / 2; i < individuals.size(); i++){
-            Individual *child = createRandomIndividual();
-            int a = randomNumber(0.0, 1.0) * (best.size()-1);
-            int b = randomNumber(0.0, 1.0) * (best.size()-1);
-            Individual *parent1 = best[a];
-            Individual *parent2 = best[b];
-            
-            parent1->mate(*parent2, child);
-            #pragma omp critical
-            {
-                newGeneration[i] = child;  
-            }
-        };
+        Individual *child = createRandomIndividual();
+        int a = randomNumber(0.0, 1.0) * (best.size()-1);
+        int b = randomNumber(0.0, 1.0) * (best.size()-1);
+        Individual *parent1 = best[a];
+        Individual *parent2 = best[b];
+        
+        parent1->mate(*parent2, child);
+        
+        newGeneration[i] = child;  
     }
+    
     return newGeneration;
 }
 
